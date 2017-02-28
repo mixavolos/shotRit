@@ -1,0 +1,33 @@
+* {
+	margin:0;
+	padding: 0;
+}
+#map {
+	position: fixed;
+	z-index: 100;
+	top: 0px;
+	left: 0;
+	bottom: 50px;
+	right: 0;
+	border: 1px solid #989898;
+}
+	#map .imgOnMapWithoutDiv {
+		position: absolute;
+		width: 14px;
+		height: 14px;
+	}
+	#map .lineDiv {
+		position: absolute;
+		background-color: rgba(0,0,0,0.3);
+	}
+
+
+
+#controls {
+	position: fixed;
+	z-index: 100;
+	//top: 0px;
+	left: 0;
+	bottom: 20px;
+	right: 0;
+}
