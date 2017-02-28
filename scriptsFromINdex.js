@@ -69,4 +69,16 @@ window.onload = function() {
 
 		document.getElementById('map').addEventListener("click", addLineVertical);
 	}
+
+	document.getElementById('butCountZver').onclick = function() {
+		var count = document.getElementById('textCountZver').value;
+		for (var i = 0; i < count; i++) {
+			var newBot = new Bot(14,14,"startup.png",i,100,1);
+			mapClass.ways[mapClass.currentWay].addBot(newBot);
+			console.log(mapClass.ways[mapClass.currentWay]);
+		}
+	}
+	document.getElementById('butRun').onclick = function() {
+		mapClass.start();
+	}
 }
