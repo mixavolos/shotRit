@@ -2,7 +2,12 @@ function Point(x,y,damage=0) {
 	this.x = x;
 	this.y = y;
 	this.damage = damage;
+	this.currentDamage = damage;
 };
+Point.prototype.addDamage = function(damage) {
+	this.damage = this.damage + damage;
+	this.currentDamage = this.currentDamage + damage;
+}
 
 function Way(startX,startY,damage=0) { 
 	this.points = [];
@@ -25,7 +30,7 @@ function runBot(bot,way,i=0) {
 		i++;
 
 		if((i+1)==way.points.length) {
-			
+
 			clearTimeout(myTimer);
 			return;
 		}
@@ -33,12 +38,29 @@ function runBot(bot,way,i=0) {
 		bot.z_vect = i;
 		bot.x = way.points[i].x;
 		bot.y = way.points[i].y;
+		bot.hp = bot.hp - way.points[i].damage;
+		way.points[i+1].damage = way.points[i+1].damage - way.points[i].damage;
+		if (way.points[i+1].damage < 0) {
+			for (var n = 0; n <= i; n++) {
+				way.points[n].damage = way.points[n].damage + Math.abs(way.points[i+1].damage);
+				if (way.points[n].damage > way.points[n].currentDamage) {
+					way.points[n].damage = way.points[n].currentDamage;
+				}
+			}
+			way.points[i+1].damage = 0;
+		}
+		way.points[i] = 0;
+		if(bot.hp<=0) {
+			bot.destroy();
+			clearTimeout(myTimer);
+			return;
+		}
 
 		bot.pauseOut=-1;
-		console.log(bot.x);
-		console.log(bot.y);
-		console.log(bot.z_vect);
-		console.log("next ----");
+		// console.log(bot.x);
+		// console.log(bot.y);
+		// console.log(bot.z_vect);
+		// console.log("next ----");
 		runBot(bot,way,i);
 	}, timePause);
 }

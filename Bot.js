@@ -10,3 +10,7 @@ function Bot(width,height,imgPath,pauseOut,hp,speed=1) {
 	this.y = 0;
 	this.z_vect = 0;
 }
+
+Bot.prototype.destroy = function() {
+	console.log("destroy");
+};
