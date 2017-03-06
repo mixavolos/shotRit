@@ -6,6 +6,59 @@ function createFlag(x,y,parrentDiv) {
 	flag.style.top = (y-7)+"px";
 	parrentDiv.appendChild(flag);
 }
+function createModalSave(jsonText) {
+	var modal = document.createElement("div");
+	//flag.setAttribute("src", "icons/flag.png");
+	modal.classList.add("mymodal");
+	modal.style.textAlign = "center";
+	var textarea = document.createElement("textarea");
+	textarea.setAttribute("cols","100");
+	textarea.setAttribute("rows","30");
+	textarea.innerHTML = jsonText;
+	textarea.style.marginTop = "40px";
+	modal.appendChild(textarea);
+	var closeNode = document.createElement("img");
+	closeNode.setAttribute("src","icons/close.png");
+	closeNode.classList.add("imgCloseModal");
+
+	function clickClose(e) {
+		document.body.removeChild(modal);
+		
+		this.removeEventListener("click", clickClose);
+		//console.log(this);
+	};
+
+	closeNode.addEventListener("click", clickClose);
+
+	modal.appendChild(closeNode);
+	document.body.appendChild(modal);
+}
+function createModalLoad(funk) {
+	var modal = document.createElement("div");
+	//flag.setAttribute("src", "icons/flag.png");
+	modal.classList.add("mymodal");
+	modal.style.textAlign = "center";
+	var textarea = document.createElement("textarea");
+	textarea.setAttribute("cols","100");
+	textarea.setAttribute("rows","30");
+	//textarea.innerHTML = jsonText;
+	textarea.style.marginTop = "40px";
+	modal.appendChild(textarea);
+	var closeNode = document.createElement("img");
+	closeNode.setAttribute("src","icons/close.png");
+	closeNode.classList.add("imgCloseModal");
+
+	function clickClose(e) {
+		document.body.removeChild(modal);
+		funk(textarea.value);
+		this.removeEventListener("click", clickClose);
+		//console.log(this);
+	};
+
+	closeNode.addEventListener("click", clickClose);
+	modal.appendChild(closeNode);
+	document.body.appendChild(modal);
+}
 function createLine(x,y,length,lineVector,parrentDiv) {
 	var line = document.createElement("div");
 	line.classList.add("lineDiv");

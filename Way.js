@@ -1,14 +1,28 @@
-function Point(x,y,damage=0) {
+function Point(x,y,damage=0,povVector=-1) {
 	this.x = x;
 	this.y = y;
 	this.damage = damage;
 	this.currentDamage = damage;
+	this.houses = [];
+	this.povVector = povVector;
 };
 Point.prototype.addDamage = function(damage) {
 	this.damage = this.damage + damage;
 	this.currentDamage = this.currentDamage + damage;
-}
+};
 
+Point.prototype.addHouse = function(house) {
+	this.houses.push(house);
+};
+
+Point.prototype.shotRits = function(bot) {
+	for (var i = 0; i < this.houses.length; i++) {
+		//console.log("z_vect = "+this.houses[i].startZ_vect);
+		this.houses[i].shotRit(bot);
+	}
+};
+
+//Way
 function Way(startX,startY,damage=0) { 
 	this.points = [];
 	this.bots = [];
@@ -17,46 +31,45 @@ function Way(startX,startY,damage=0) {
 };
 
 Way.prototype.runBots = function() {
+	console.log("runBots");
 	for (var i = 0; i < this.bots.length; i++) {
 		this.bots[i].x = this.points[0].x;
 		this.bots[i].y = this.points[0].y;
+		this.bots[i].appendBot(constModule.parrentDiv);
+		this.bots[i].refresh();
 		runBot(this.bots[i],this);
 	}
 };
 
+
 function runBot(bot,way,i=0) {
-	var timePause = (bot.pauseOut===-1)?bot.speed:bot.pauseOut;
+	var timePause = bot.isRun?bot.speed:bot.pauseOut;
+	//console.log(way);
+	//console.log(timePause);
 	var myTimer = setTimeout(function(){
 		i++;
 
-		if((i+1)==way.points.length) {
-
+		if((i+1)===way.points.length) {
+			console.log("the end -"+way);
 			clearTimeout(myTimer);
 			return;
 		}
-		
-		bot.z_vect = i;
 		bot.x = way.points[i].x;
 		bot.y = way.points[i].y;
-		bot.hp = bot.hp - way.points[i].damage;
-		way.points[i+1].damage = way.points[i+1].damage - way.points[i].damage;
-		if (way.points[i+1].damage < 0) {
-			for (var n = 0; n <= i; n++) {
-				way.points[n].damage = way.points[n].damage + Math.abs(way.points[i+1].damage);
-				if (way.points[n].damage > way.points[n].currentDamage) {
-					way.points[n].damage = way.points[n].currentDamage;
-				}
-			}
-			way.points[i+1].damage = 0;
-		}
-		way.points[i] = 0;
+		bot.changed();
+		way.points[i].shotRits(bot);
+
+		//console.log(bot.hp);
+		
 		if(bot.hp<=0) {
-			bot.destroy();
+			console.log("the end hp<=0"+way);
+			bot.destroy(constModule.parrentDiv);
 			clearTimeout(myTimer);
 			return;
 		}
 
-		bot.pauseOut=-1;
+		//bot.pauseOut=-1;
+		bot.isRun = true;
 		// console.log(bot.x);
 		// console.log(bot.y);
 		// console.log(bot.z_vect);
@@ -84,12 +97,23 @@ Way.prototype.addPointsFromLine = function(lastX,lastY,lineVector) {
 		    case constModule.gorizontalLine:
 		    	if(lastX<startX) {
 		    		for (var i = startX - 1; i >= lastX; i--) {
-						var newPoint = new Point(i,startY); //!!! not damage
+		    			console.log("if");
+		    			var newPoint;
+		    			if (i===startX-1)
+		    				newPoint = new Point(i,startY,0,constModule.gorizontalLine);
+		    			else
+							newPoint = new Point(i,startY); //!!! not damage
+
 						this.addPoint(newPoint);
 					}
 		    	} else {
 			    	for (var i = startX + 1; i <= lastX; i++) {
-						var newPoint = new Point(i,startY); //!!! not damage
+			    		console.log("else");
+			    		var newPoint;
+			    		if (i===startX+1)
+		    				newPoint = new Point(i,startY,0,constModule.gorizontalLine);
+		    			else
+							newPoint = new Point(i,startY); //!!! not damage
 						this.addPoint(newPoint);
 					}
 				}
@@ -101,13 +125,21 @@ Way.prototype.addPointsFromLine = function(lastX,lastY,lineVector) {
 		    case constModule.verticalLine:
 		    	if (lastY<startY) {
 		    		for (var i = startY - 1; i >= lastY; i--) {
-						var newPoint = new Point(startX,i);
+		    			var newPoint;
+			    		if (i===startY-1)
+		    				newPoint = new Point(startX,i,0,constModule.verticalLine);
+		    			else
+							newPoint = new Point(startX,i);
 						//console.log(this);
 						this.addPoint(newPoint);
 					}
 		    	} else {
 			    	for (var i = startY + 1; i <= lastY; i++) {
-						var newPoint = new Point(startX,i);
+			    		var newPoint;
+			    		if (i===startY+1)
+		    				newPoint = new Point(startX,i,0,constModule.verticalLine);
+		    			else
+							newPoint = new Point(startX,i);
 						//console.log(this);
 						this.addPoint(newPoint);
 					}

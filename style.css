@@ -2,12 +2,29 @@
 	margin:0;
 	padding: 0;
 }
+input[type="text"] {
+	width: 25px;
+}
+.mymodal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,0.8);
+	z-index: 200;
+}
+	.mymodal .imgCloseModal {
+		position: absolute;
+		top: 30px;
+		right: 30px;
+	}
 #map {
 	position: fixed;
 	z-index: 100;
 	top: 0px;
 	left: 0;
-	bottom: 50px;
+	bottom: 100px;
 	right: 0;
 	border: 1px solid #989898;
 }
@@ -20,14 +37,46 @@
 		position: absolute;
 		background-color: rgba(0,0,0,0.3);
 	}
-
-
+	#map .imghouse, #map .imgbot {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width:100%;
+	}
+	#map .house, #map .bot {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		left: 0;
+		top: 0;
+	}
+	#map .bot .inpHp {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 0;
+		height: 4px;
+		border:1px solid rgba(0,0,0,0.3);;
+	}
+	#map .bot .paddHp {
+		background-color: rgba(10,115,10,0.5);
+		height: 100%;
+		width: 100%;
+	}
+	#map .bot .paddHp.backrColRed {
+		background-color: rgba(251,10,10,0.5);
+	}
+	#map .nodeShot {
+		position: absolute;
+		background-color: black;
+	}
 
 #controls {
 	position: fixed;
 	z-index: 100;
 	//top: 0px;
 	left: 0;
-	bottom: 20px;
+	bottom: 0px;
 	right: 0;
 }

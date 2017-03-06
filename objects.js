@@ -4,4 +4,8 @@ var constModule = {
 	boldLine: 10,
 	isDebug: true,
 	parrentDiv: "",
+	timeAfterBots: 0,
+}
+var constTypeShot = {
+	squer: 1,
 }
