@@ -1,9 +1,9 @@
 window.onload = function() {
-	var mapDoom;
-	var mapClass;
-
+	var mapDoom, mapClass, lblMapNode, lblMoney;
+	lblMapNode = document.getElementById('lblHpMap');
+	lblMoney = document.getElementById('lblMoney');
 	mapDoom = document.getElementById('map');
-	mapClass = new Map(mapDoom);
+	mapClass = new Map(mapDoom,100,lblMapNode,100,lblMoney);
 
 	constModule.parrentDiv = mapDoom;
 
@@ -13,7 +13,9 @@ window.onload = function() {
 
 		function addStartPoint(e) {
 			var ev = e || window.event;
-			var newWay = new Way(ev.x,ev.y);
+			var zgladz = parseFloat(document.getElementById('textZgladzWay').value);
+
+			var newWay = new Way(ev.x,ev.y,0,zgladz);
 			createFlag(ev.x,ev.y,this);
 			mapClass.addWay(newWay);
 			console.log("add New Way");
@@ -121,60 +123,78 @@ window.onload = function() {
 		}
 		console.log(constModule.timeAfterBots);
 		for (var i = 0; i < property.count; i++) {
-			var newBot = new Bot(property.width,property.height,property.imgPath,i*property.pauseOut+constModule.timeAfterBots,property.hp,property.speed);
+			var newBot = new Bot(property.width,property.height,property.imgPath,i*property.pauseOut+constModule.timeAfterBots,property.hp,property.speed*mapClass.ways[mapClass.currentWay].lineZglaz);
 			mapClass.ways[mapClass.currentWay].addBot(newBot);
 			//console.log(mapClass.ways[mapClass.currentWay]);
 		}
 	}
 	document.getElementById('butRun').onclick = function() {
-		mapClass.modRun= true;
+		mapClass.money = parseFloat(document.getElementById('textMapMoney').value);
+		document.getElementById('lblMoney').innerHTML = mapClass.money;
+		//mapClass.modRun= true;
+		mapClass.changeStartHp(parseFloat(document.getElementById('textMapHp').value));
 		mapClass.start();
 	}
 	document.getElementById('butSave').onclick = function() {
-
+		mapClass.money = parseFloat(document.getElementById('textMapMoney').value);
+		//mapClass.modRun= true;
+		mapClass.changeStartHp(parseFloat(document.getElementById('textMapHp').value));
 		createModalSave(JSON.stringify(mapClass));
 	}
 	document.getElementById('butLoad').onclick = function() {
 		function myFunckClose(myjson) { 
-			mapClass = new Map(mapDoom);
+			
 			var myMap = JSON.parse(myjson);
-
-			for (var i = 0; i < myMap.ways.length; i++) {
-				var lastPoint;
-				//console.log(lastPoint);
-				for (var n = 0; n < myMap.ways[i].points.length; n++) {
-					if (n===0) {
-						var newWay = new Way(myMap.ways[i].points[n].x,myMap.ways[i].points[n].y,myMap.ways[i].points[n].damage);
-						createFlag(myMap.ways[i].points[n].x,myMap.ways[i].points[n].y,mapDoom);
-						mapClass.addWay(newWay);
-					} else {
-						var newPoint = new Point(myMap.ways[i].points[n].x,myMap.ways[i].points[n].y,myMap.ways[i].points[n].damage,myMap.ways[i].points[n].povVector); //!!! not damage
-						mapClass.ways[mapClass.currentWay].points.push(newPoint);
-						//console.log("lastPoint="+lastPoint+"  povVec="+mapClass.ways[mapClass.currentWay].points[n].povVector)
-						if(lastPoint===undefined&&mapClass.ways[mapClass.currentWay].points[n].povVector!==-1) 
-							lastPoint = mapClass.ways[mapClass.currentWay].points[n];
-						else if(mapClass.ways[mapClass.currentWay].points[n].povVector!==-1||(lastPoint!==undefined&&n===myMap.ways[i].points.length-1)) {
-							//console.log("eles");
-							//if(mapClass.ways[mapClass.currentWay].points[n].povVector===constModule.gorizontalLine) 
-							if(lastPoint.povVector===constModule.gorizontalLine) 
-								createLine(lastPoint.x,lastPoint.y,(mapClass.ways[mapClass.currentWay].points[n].x - lastPoint.x),constModule.gorizontalLine,constModule.parrentDiv);
-							else if(lastPoint.povVector===constModule.verticalLine)
-								createLine(lastPoint.x,lastPoint.y,(mapClass.ways[mapClass.currentWay].points[n].y - lastPoint.y),constModule.verticalLine,constModule.parrentDiv);
-
-							lastPoint = mapClass.ways[mapClass.currentWay].points[n];
-						} 
-					}
-				}
-			}
-			console.log(mapClass);
-			// mapClass.ways = myMap.ways;
-			// mapClass.currentWay = myMap.currentWay;
-			// mapClass.house = myMap.house;
-			// mapClass.modRun = myMap.modRun;
-			// mapClass.mapNode = myMap.mapNode;
-			console.log(myMap);
+			mapClass = new Map(mapDoom,myMap.hp,lblMapNode,myMap.money,lblMoney);
+			document.getElementById('textMapHp').value = myMap.hp;
+			copyMap(mapClass,myMap);
 		};
 		createModalLoad(myFunckClose);
 
+	}
+
+	document.getElementById('btnByHouse').onclick = function() {
+
+		var tmpEl = document.getElementById('slcTypeBush');
+		var objCostHouses = getHouseForBy(parseInt(tmpEl.value));
+
+		if (objCostHouses===undefined) {
+			alert("Error!! objCostHouses===undefined");
+			return;
+		}
+
+
+		if (mapClass.money<objCostHouses.cost) {
+			document.getElementById('lblMoney').style.color = "red";
+		} else {
+			this.style.backgroundColor = "red";
+			//mapClass.money -= objCostHouses.cost;
+			mapClass.changeMoney(-objCostHouses.cost);
+			document.getElementById('lblMoney').innerHTML = mapClass.money;
+			function addHouseBy(e) {
+				var ev = e || window.event;
+				var propertyHouse = {
+					damage:objCostHouses.damage,
+					speedShot:objCostHouses.speed,
+					speedFly:document.getElementById('textSpeedFlyHouse').value,
+					width:document.getElementById('textWidthHouse').value,
+					height:document.getElementById('textHeightHouse').value,
+					imgPath:document.getElementById('textImgPathHouse').value,
+					radius:document.getElementById('textRaidusHouse').value,
+					colorShot:document.getElementById('textColorShotHouse').value,
+				}
+				//var newHouse = new House(propertyHouse.damage,propertyHouse.speedShot,propertyHouse.width,propertyHouse.height,propertyHouse.imgPath,ev.x,ev.y,propertyHouse.radius,constTypeShot.squer,propertyHouse.colorShot);
+				var newHouse = new House(propertyHouse,ev.x,ev.y,constTypeShot.squer);
+				newHouse.appendHouse(mapClass.mapNode);
+				mapClass.addHouse(newHouse);
+
+
+				this.removeEventListener("click", addHouseBy);
+				document.getElementById('btnByHouse').style.backgroundColor = "buttonface";
+				//console.log(this);
+			};
+
+			document.getElementById('map').addEventListener("click", addHouseBy);
+		}
 	}
 }

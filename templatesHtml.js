@@ -33,16 +33,58 @@ function createModalSave(jsonText) {
 	modal.appendChild(closeNode);
 	document.body.appendChild(modal);
 }
+
 function createModalLoad(funk) {
 	var modal = document.createElement("div");
 	//flag.setAttribute("src", "icons/flag.png");
 	modal.classList.add("mymodal");
 	modal.style.textAlign = "center";
+
+	var myul = document.createElement("ul");
+	myul.classList.add("dropdown");
+	var mymapsCategorys = getMapsWithCategorys();
+	
+	for (var i = 0; i < mymapsCategorys.length; i++) {
+		var tmpLi, ulElem;
+		tmpLi = document.createElement("li");
+		tmpLi.classList.add("dropdown-top");
+		tmpLi.innerHTML = "<label class='dropdown-top' >"+mymapsCategorys[i].category+"</label>"
+		ulElem = document.createElement("ul");
+		ulElem.classList.add("dropdown-inside");
+		for (var n = 0; n < mymapsCategorys[i].maps.length; n++) {
+			var tmpLiUl = document.createElement("li");
+			tmpLiUl.innerHTML = mymapsCategorys[i].maps[n].name;
+			tmpLiUl.setAttribute("data-numbermap",n);
+			tmpLiUl.setAttribute("data-numbercategory",i);
+
+			function loadMap(e) {
+				//document.body.removeChild(modal);
+				//funk(textarea.value);
+				var myNumbermap = this.getAttribute("data-numbermap");
+				var myNumbercategor = this.getAttribute("data-numbercategory");
+				var mymapsCategorysLi = getMapsWithCategorys();
+				textarea.value = mymapsCategorysLi[myNumbercategor].maps[myNumbermap].jsonMap;
+
+				//this.removeEventListener("click", loadMap);
+				//console.log(this);
+			};
+
+			tmpLiUl.addEventListener("click", loadMap);
+
+
+
+			ulElem.appendChild(tmpLiUl);
+		}
+		tmpLi.appendChild(ulElem);
+		myul.appendChild(tmpLi);
+	}
+	modal.appendChild(myul);
+
 	var textarea = document.createElement("textarea");
 	textarea.setAttribute("cols","100");
 	textarea.setAttribute("rows","30");
 	//textarea.innerHTML = jsonText;
-	textarea.style.marginTop = "40px";
+	textarea.style.marginTop = "80px";
 	modal.appendChild(textarea);
 	var closeNode = document.createElement("img");
 	closeNode.setAttribute("src","icons/close.png");
@@ -59,6 +101,10 @@ function createModalLoad(funk) {
 	modal.appendChild(closeNode);
 	document.body.appendChild(modal);
 }
+function createLiForUl() {
+
+}
+
 function createLine(x,y,length,lineVector,parrentDiv) {
 	var line = document.createElement("div");
 	line.classList.add("lineDiv");

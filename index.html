@@ -5,9 +5,20 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+	<div id="info">
+		<label>Hp map:&nbsp;</label><label class="marg20" id="lblHpMap"></label>
+		<!-- &nbsp; --><label>Money:&nbsp;</label><label class="marg20" id="lblMoney"></label>
+		<select id="slcTypeBush">
+			<option value="1">damag:1 ,speed:x1, cost:20</option>
+			<option value="2">damag:1 ,speed:x2, cost:40</option>
+			<option value="3">damag:2 ,speed:x1, cost:40</option>
+		</select>
+		<input id="btnByHouse" type="button" value="By House">
+	</div>
 	<div id="map"></div>
 	<div id="controls">
 		<hr>
+		<label>  Line zgladz:</label><input id="textZgladzWay" type="text" value="0.5">
 		<input id="butStartPoint" type="button" value="st">
 		<br>
 		<input id="butAppendPovGor" type="button" value="append pov gorizont">
@@ -15,29 +26,32 @@
 		<br>
 		<label>  Damage:</label><input id="textDamageHouse" type="text" value="1">
 		<label>  Speed:</label><input id="textSpeedShotHouse" type="text" value="1">
-		<label>  Width:</label><input id="textWidthHouse" type="text" value="14">
-		<label>  Height:</label><input id="textHeightHouse" type="text" value="14">
+		<label>  Width:</label><input id="textWidthHouse" type="text" value="20">
+		<label>  Height:</label><input id="textHeightHouse" type="text" value="20">
 		<label>  Image:</label><input id="textImgPathHouse" type="text" value="startup.png">
-		<label>  Radius:</label><input id="textRaidusHouse" type="text" value="30">
+		<label>  Radius:</label><input id="textRaidusHouse" type="text" value="40">
 		<label>  ColorShot:</label><input id="textColorShotHouse" type="text" value="red">
-		<label>  Speed Fly:</label><input id="textSpeedFlyHouse" type="text" value="0.03">
+		<label>  Speed Fly:</label><input id="textSpeedFlyHouse" type="text" value="0.001">
 		<input id="butAppendBush" type="button" value="append bush">
 		<br>
 		<label>  Count:</label><input id="textCountZver" type="text" value="3">
 		<label>  Hp:</label><input id="textHpZver" type="text" value="10">
-		<label>  Speed:</label><input id="textSpeedZver" type="text" value="0.1">
-		<label>  Width:</label><input id="textWidthZver" type="text" value="14">
-		<label>  Height:</label><input id="textHeightZver" type="text" value="14">
+		<label>  Speed:</label><input id="textSpeedZver" type="text" value="0.03">
+		<label>  Width:</label><input id="textWidthZver" type="text" value="20">
+		<label>  Height:</label><input id="textHeightZver" type="text" value="20">
 		<label>  Image:</label><input id="textImgPathZver" type="text" value="startup.png">
 		<label>  Pause out:</label><input id="textPauseOutZver" type="text" value="2">
 		<label>  Time after a before bots:</label><input id="textTimeAfterZver" type="text" value="0">
 		<input id="butCountZver" type="button" value="add Bot">
 		<br>
+		<label>  Map hp:</label><input id="textMapHp" type="text" value="10">
+		<label>  Map money:</label><input id="textMapMoney" type="text" value="100">
 		<input id="butRun" type="button" value="Run">
 		<input id="butSave" type="button" value="Save">
 		<input id="butLoad" type="button" value="Load">
 
 		<script type="text/javascript" src="templatesHtml.js"></script>
+		<script type="text/javascript" src="maps/maps.js"></script>
 		<script type="text/javascript" src="objects.js"></script>
 		<script type="text/javascript" src="Bot.js"></script>
 		<script type="text/javascript" src="House.js"></script>

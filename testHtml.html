@@ -4,13 +4,27 @@
 	<title>test</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<style type="text/css">
-		
-		#mymodal .textar {
-			
-		}
+	#info select {
+	}
+
 	</style>
 </head>
 <body>
+<div id="info">
+	<label>Hp map:&nbsp;</label><label class="marg20" id="lblHpMap"></label>
+	<!-- &nbsp; --><label>Money:&nbsp;</label><label class="marg20" id="lblMoney"></label>
+	<select id="slcTypeBush">
+		<option value="1">damag:1, speedAttack:x1</option>
+		<option value="2">damag:1 ,speedAttack:x2</option>
+		<option value="3">damag:2 ,speedAttack:x1</option>
+	</select>
+
+	<script type="text/javascript">
+		var tmpEl = document.getElementById('slcTypeBush');
+		console.log(tmpEl);
+		console.log(tmpEl.value);
+	</script>
+</div>
 <div id="map">
 	<div class="bot" style="left: 50px;top:100px;">
 		<img class="imgbot" src="startup.png" style="width:14px;height:14px;left: -7px;top: -7px;">
@@ -19,9 +33,10 @@
 		</div>
 	</div>
 </div>
-<div class="mymodal" style="text-align: center;">
-	<textarea class="textar" cols="100" rows="30"></textarea>
-</div>
+<!-- <input type="type="range" name="aeou">	 -->
+
+	
+
 </div>
 </body>
 </html>

@@ -5,6 +5,17 @@
 input[type="text"] {
 	width: 25px;
 }
+#info {
+	position: fixed;
+	z-index: 125;
+	top: 0;
+	right: 0;
+	left: 0;
+	background-color: rgba(0,0,0,0.5);
+}
+	#info .marg20 {
+		margin-right: 20px;
+	}
 .mymodal {
 	position: fixed;
 	top: 0;
@@ -19,6 +30,34 @@ input[type="text"] {
 		top: 30px;
 		right: 30px;
 	}
+	ul.dropdown li { position: relative; }
+	 ul.dropdown,
+	 ul.dropdown-inside {
+	 list-style-type: none;
+	 padding: 0;
+	 cursor: pointer;
+	 }
+	 ul.dropdown-inside {
+	 position: absolute;
+	 left: -9999px;
+	 }
+	 ul.dropdown li.dropdown-top {
+	 display: inline;
+	 float: left;
+	 margin: 0 1px 0 0;
+	 }
+	 ul.dropdown li.dropdown-top label {
+	 padding: 3px 10px 4px;
+	 display: block;
+	 }
+	 ul.dropdown label.dropdown-top { background: #efefef; }
+	 ul.dropdown label.dropdown-top:hover { padding: 2px 10px 5px; }
+	 ul.dropdown li.dropdown-top:hover .dropdown-inside {
+	 display: block;
+	 left: 0;
+	 }
+	 ul.dropdown .dropdown-inside { background: #fff; }
+	 ul.dropdown .dropdown-inside label:hover { background: #efefef; }
 #map {
 	position: fixed;
 	z-index: 100;

@@ -79,6 +79,8 @@ Bot.prototype.changed = function() {
 
 Bot.prototype.destroy = function(parrent) {
 	parrent.removeChild(this.node);
+	this.hp = 0;
+	this.isRun = false;
 	//this.hp = this.startHp;
 	console.log("destroy");
 };
