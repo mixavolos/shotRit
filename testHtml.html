@@ -4,12 +4,20 @@
 	<title>test</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<style type="text/css">
-	#info select {
+	#modalWindowHouse {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1000;
+		background-color: rgba(0,0,0,0.8);
 	}
 
 	</style>
 </head>
 <body>
+<div id="modalWindowHouse"></div>
 <div id="info">
 	<label>Hp map:&nbsp;</label><label class="marg20" id="lblHpMap"></label>
 	<!-- &nbsp; --><label>Money:&nbsp;</label><label class="marg20" id="lblMoney"></label>

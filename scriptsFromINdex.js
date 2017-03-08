@@ -5,6 +5,10 @@ window.onload = function() {
 	mapDoom = document.getElementById('map');
 	mapClass = new Map(mapDoom,100,lblMapNode,100,lblMoney);
 
+	//var styleElem = document.head.appendChild(document.createElement("style"));
+	//constHtmlNode.nodeStyleHead = styleElem;
+	//styleElem.innerHTML = "#theDiv:before {background: black;}";
+
 	constModule.parrentDiv = mapDoom;
 
 	//Add start Point
@@ -14,8 +18,9 @@ window.onload = function() {
 		function addStartPoint(e) {
 			var ev = e || window.event;
 			var zgladz = parseFloat(document.getElementById('textZgladzWay').value);
+			var widthWay = parseFloat(document.getElementById('textWidthWay').value);
 
-			var newWay = new Way(ev.x,ev.y,0,zgladz);
+			var newWay = new Way(ev.x,ev.y,widthWay,0,zgladz);
 			createFlag(ev.x,ev.y,this);
 			mapClass.addWay(newWay);
 			console.log("add New Way");
@@ -74,6 +79,35 @@ window.onload = function() {
 
 	document.getElementById('butAppendBush').onclick = function() {
 		this.style.backgroundColor = "red";
+		var modalHouse = document.createElement("div");
+		modalHouse.id = "modalWindowHouse";
+
+		document.body.appendChild(modalHouse);
+
+		var propertyHouseTemplate = {
+			damage:document.getElementById('textDamageHouse').value,
+			speedShot:document.getElementById('textSpeedShotHouse').value,
+			speedFly:document.getElementById('textSpeedFlyHouse').value,
+			width:document.getElementById('textWidthHouse').value,
+			height:document.getElementById('textHeightHouse').value,
+			imgPath:document.getElementById('textImgPathHouse').value,
+			radius:document.getElementById('textRaidusHouse').value,
+			colorShot:document.getElementById('textColorShotHouse').value,
+		}
+		//constHtmlNode.nodeStyleHead.innerHTML = ".house:before {content: "";top: "++"px;left: "++";width: "++";height: "++";position: absolute;border: 2px solid red;}";
+		var newHouseTemplate = new House(propertyHouseTemplate,-1000,-1000,constTypeShot.squer);
+		newHouseTemplate.appendHouse(modalHouse);
+		constHtmlNode.nodHouseCreate = newHouseTemplate;
+
+		modalHouse.addEventListener("mousemove", evMouseMoveHouse);
+
+		function evMouseMoveHouse(e) {
+			var ev = e || window.event;
+			//console.log(ev.offsetX+"  "+ev.offsetY);
+
+			constHtmlNode.nodHouseCreate.node.style.left = ev.x + "px";
+			constHtmlNode.nodHouseCreate.node.style.top = ev.y + "px";
+		}
 
 		function addHouse(e) {
 			var ev = e || window.event;
@@ -88,17 +122,21 @@ window.onload = function() {
 				colorShot:document.getElementById('textColorShotHouse').value,
 			}
 			//var newHouse = new House(propertyHouse.damage,propertyHouse.speedShot,propertyHouse.width,propertyHouse.height,propertyHouse.imgPath,ev.x,ev.y,propertyHouse.radius,constTypeShot.squer,propertyHouse.colorShot);
-			var newHouse = new House(propertyHouse,ev.x,ev.y,constTypeShot.squer);
-			newHouse.appendHouse(mapClass.mapNode);
-			mapClass.addHouse(newHouse);
+			if(mapClass.checkIfCreateHouse(ev.x,ev.y,propertyHouse.width,propertyHouse.height)) {
+				var newHouse = new House(propertyHouse,ev.x,ev.y,constTypeShot.squer);
+				newHouse.appendHouse(mapClass.mapNode);
+				mapClass.addHouse(newHouse);
 
-
-			this.removeEventListener("click", addHouse);
-			document.getElementById('butAppendBush').style.backgroundColor = "buttonface";
+				this.removeEventListener("click", addHouse);
+				this.removeEventListener("mousemove", evMouseMoveHouse);
+				document.body.removeChild(this);
+				document.getElementById('butAppendBush').style.backgroundColor = "buttonface";
+			}
 			//console.log(this);
 		};
 
-		document.getElementById('map').addEventListener("click", addHouse);
+		//document.getElementById('map').addEventListener("click", addHouse);
+		modalHouse.addEventListener("click",addHouse);
 	}
 
 	document.getElementById('butCountZver').onclick = function() {
@@ -117,12 +155,13 @@ window.onload = function() {
 		if (lenBots !== 0) {
 			console.log(parseFloat(property.timeAfter));
 			console.log(mapClass.ways[mapClass.currentWay].bots[lenBots-1].pauseOut/1000);
-			constModule.timeAfterBots += parseFloat(property.timeAfter) + mapClass.ways[mapClass.currentWay].bots[lenBots-1].pauseOut/1000
+			constModule.timeAfterBots = parseFloat(property.timeAfter) + mapClass.ways[mapClass.currentWay].bots[lenBots-1].pauseOut/1000;
 		} else {
 			constModule.timeAfterBots = parseFloat(property.timeAfter);
 		}
 		console.log(constModule.timeAfterBots);
 		for (var i = 0; i < property.count; i++) {
+			//var newBot = new Bot(property.width,property.height,property.imgPath,i*property.pauseOut+constModule.timeAfterBots,property.hp,property.speed*mapClass.ways[mapClass.currentWay].lineZglaz);
 			var newBot = new Bot(property.width,property.height,property.imgPath,i*property.pauseOut+constModule.timeAfterBots,property.hp,property.speed*mapClass.ways[mapClass.currentWay].lineZglaz);
 			mapClass.ways[mapClass.currentWay].addBot(newBot);
 			//console.log(mapClass.ways[mapClass.currentWay]);
@@ -168,6 +207,37 @@ window.onload = function() {
 			document.getElementById('lblMoney').style.color = "red";
 		} else {
 			this.style.backgroundColor = "red";
+
+			var modalHouse = document.createElement("div");
+			modalHouse.id = "modalWindowHouse";
+
+			document.body.appendChild(modalHouse);
+
+			var propertyHouseTemplate = {
+				damage:document.getElementById('textDamageHouse').value,
+				speedShot:document.getElementById('textSpeedShotHouse').value,
+				speedFly:document.getElementById('textSpeedFlyHouse').value,
+				width:document.getElementById('textWidthHouse').value,
+				height:document.getElementById('textHeightHouse').value,
+				imgPath:document.getElementById('textImgPathHouse').value,
+				radius:document.getElementById('textRaidusHouse').value,
+				colorShot:document.getElementById('textColorShotHouse').value,
+			}
+			//constHtmlNode.nodeStyleHead.innerHTML = ".house:before {content: "";top: "++"px;left: "++";width: "++";height: "++";position: absolute;border: 2px solid red;}";
+			var newHouseTemplate = new House(propertyHouseTemplate,-1000,-1000,constTypeShot.squer);
+			newHouseTemplate.appendHouse(modalHouse);
+			constHtmlNode.nodHouseCreate = newHouseTemplate;
+
+			modalHouse.addEventListener("mousemove", evMouseMoveHouse);
+
+			function evMouseMoveHouse(e) {
+				var ev = e || window.event;
+				//console.log(ev.offsetX+"  "+ev.offsetY);
+
+				constHtmlNode.nodHouseCreate.node.style.left = ev.x + "px";
+				constHtmlNode.nodHouseCreate.node.style.top = ev.y + "px";
+			}
+
 			//mapClass.money -= objCostHouses.cost;
 			mapClass.changeMoney(-objCostHouses.cost);
 			document.getElementById('lblMoney').innerHTML = mapClass.money;
@@ -184,17 +254,22 @@ window.onload = function() {
 					colorShot:document.getElementById('textColorShotHouse').value,
 				}
 				//var newHouse = new House(propertyHouse.damage,propertyHouse.speedShot,propertyHouse.width,propertyHouse.height,propertyHouse.imgPath,ev.x,ev.y,propertyHouse.radius,constTypeShot.squer,propertyHouse.colorShot);
-				var newHouse = new House(propertyHouse,ev.x,ev.y,constTypeShot.squer);
-				newHouse.appendHouse(mapClass.mapNode);
-				mapClass.addHouse(newHouse);
+				if(mapClass.checkIfCreateHouse(ev.x,ev.y,propertyHouse.width,propertyHouse.height)) {
+					var newHouse = new House(propertyHouse,ev.x,ev.y,constTypeShot.squer);
+					newHouse.appendHouse(mapClass.mapNode);
+					mapClass.addHouse(newHouse);
 
 
-				this.removeEventListener("click", addHouseBy);
-				document.getElementById('btnByHouse').style.backgroundColor = "buttonface";
+					this.removeEventListener("click", addHouseBy);
+					this.removeEventListener("mousemove", evMouseMoveHouse);
+					document.body.removeChild(this);
+					document.getElementById('btnByHouse').style.backgroundColor = "buttonface";
+				}
 				//console.log(this);
 			};
 
-			document.getElementById('map').addEventListener("click", addHouseBy);
+			//document.getElementById('map').addEventListener("click", addHouseBy);
+			modalHouse.addEventListener("click",addHouseBy);
 		}
 	}
 }

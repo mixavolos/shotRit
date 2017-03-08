@@ -24,6 +24,14 @@ function House(pr,startx,starty,typeShot) {
 	inpImg.style.left = -this.width/2 + "px";
 	inpImg.style.top = -this.height/2 + "px";
 	this.node.appendChild(inpImg);
+
+	var houseRadius = document.createElement("div");
+	houseRadius.classList.add("houseRadius");
+	houseRadius.style.width = this.radius*2 + "px";
+	houseRadius.style.height = this.radius*2 + "px";
+	houseRadius.style.left = -this.radius + "px";
+	houseRadius.style.top = -this.radius + "px";
+	this.node.appendChild(houseRadius);
 	// inpImg.style.width = this.width+"px";
 	// inpImg.style.height = this.height+"px";
 	this.node.classList.add("house");

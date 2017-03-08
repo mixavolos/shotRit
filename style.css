@@ -16,6 +16,23 @@ input[type="text"] {
 	#info .marg20 {
 		margin-right: 20px;
 	}
+#modalWindowHouse {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1000;
+	/*background-color: rgba(0,0,0,0.8);*/
+}
+	#modalWindowHouse .houseRadius {
+	   	position: absolute;
+	    /*top: -22px;
+	    left: -22px;
+	    width: 60px;
+	    height: 60px;*/
+	    border: 2px solid red;
+	}
 .mymodal {
 	position: fixed;
 	top: 0;
@@ -30,6 +47,8 @@ input[type="text"] {
 		top: 30px;
 		right: 30px;
 	}
+
+
 	ul.dropdown li { position: relative; }
 	 ul.dropdown,
 	 ul.dropdown-inside {
@@ -66,7 +85,15 @@ input[type="text"] {
 	bottom: 100px;
 	right: 0;
 	border: 1px solid #989898;
-}
+}	
+	#map .houseRadius {
+	   	position: absolute;
+	    /*top: -22px;
+	    left: -22px;
+	    width: 60px;
+	    height: 60px;*/
+	    border: 1px solid rgba(0,0,0,0.1);
+	}
 	#map .imgOnMapWithoutDiv {
 		position: absolute;
 		width: 14px;
@@ -76,14 +103,14 @@ input[type="text"] {
 		position: absolute;
 		background-color: rgba(0,0,0,0.3);
 	}
-	#map .imghouse, #map .imgbot {
+	.imghouse, .imgbot {
 		position: absolute;
 		top: 0;
 		left: 0;
 		height: 100%;
 		width:100%;
 	}
-	#map .house, #map .bot {
+	.house, .bot {
 		position: absolute;
 		width: 1px;
 		height: 1px;

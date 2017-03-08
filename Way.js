@@ -23,12 +23,13 @@ Point.prototype.shotRits = function(bot) {
 };
 
 //Way
-function Way(startX,startY,damage=0,lineZglaz=1) { 
+function Way(startX,startY,widthWay,damage=0,lineZglaz=1) {
 	this.points = [];
 	this.bots = [];
 	var newPoint = new Point(startX,startY,damage); //!!! not damage
 	this.points.push(newPoint);
 	this.lineZglaz = lineZglaz;
+	this.widthWay = widthWay;
 };
 
 Way.prototype.runBots = function(map) {
@@ -129,7 +130,7 @@ Way.prototype.addPointsFromLine = function(lastX,lastY,lineVector) {
 					}
 				}
 				if(constModule.isDebug) {
-					createLine(startX,startY,(lastX - startX),constModule.gorizontalLine,constModule.parrentDiv);
+					createLine(startX,startY,this.widthWay,(lastX - startX),constModule.gorizontalLine,constModule.parrentDiv);
 				}
 				//console.log(this);
 	   			break;
@@ -156,7 +157,7 @@ Way.prototype.addPointsFromLine = function(lastX,lastY,lineVector) {
 					}
 				}
 				if(constModule.isDebug) {
-					createLine(startX,startY,(lastY - startY),constModule.verticalLine,constModule.parrentDiv);
+					createLine(startX,startY,this.widthWay,(lastY - startY),constModule.verticalLine,constModule.parrentDiv);
 				}
 				//console.log(this);
 		    	break;

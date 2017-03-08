@@ -5,10 +5,14 @@ var constModule = {
 	isDebug: true,
 	parrentDiv: "",
 	timeAfterBots: 0,
-}
+};
 var constTypeShot = {
 	squer: 1,
-}
+};
+var constHtmlNode = {
+	nodHouseCreate:-1,
+	nodeStyleHead:-1,
+};
 function getHouseForBy(type) {
 	var resObj;
 	switch(type) {
@@ -105,7 +109,7 @@ function copyMap(map,myMap) {
 				//console.log(lastPoint);
 				for (var n = 0; n < myMap.ways[i].points.length; n++) {
 					if (n===0) {
-						var newWay = new Way(myMap.ways[i].points[n].x,myMap.ways[i].points[n].y,myMap.ways[i].points[n].damage);
+						var newWay = new Way(myMap.ways[i].points[n].x,myMap.ways[i].points[n].y,myMap.ways[i].widthWay,myMap.ways[i].points[n].damage,myMap.ways[i].lineZglaz);
 						createFlag(myMap.ways[i].points[n].x,myMap.ways[i].points[n].y,map.mapNode);
 						map.addWay(newWay);
 					} else {
@@ -118,9 +122,9 @@ function copyMap(map,myMap) {
 							//console.log("eles");
 							//if(map.ways[map.currentWay].points[n].povVector===constModule.gorizontalLine) 
 							if(lastPoint.povVector===constModule.gorizontalLine) 
-								createLine(lastPoint.x,lastPoint.y,(map.ways[map.currentWay].points[n].x - lastPoint.x),constModule.gorizontalLine,constModule.parrentDiv);
+								createLine(lastPoint.x,lastPoint.y,myMap.ways[i].widthWay,(map.ways[map.currentWay].points[n].x - lastPoint.x),constModule.gorizontalLine,constModule.parrentDiv);
 							else if(lastPoint.povVector===constModule.verticalLine)
-								createLine(lastPoint.x,lastPoint.y,(map.ways[map.currentWay].points[n].y - lastPoint.y),constModule.verticalLine,constModule.parrentDiv);
+								createLine(lastPoint.x,lastPoint.y,myMap.ways[i].widthWay,(map.ways[map.currentWay].points[n].y - lastPoint.y),constModule.verticalLine,constModule.parrentDiv);
 
 							lastPoint = map.ways[map.currentWay].points[n];
 						} 
